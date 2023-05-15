@@ -2,7 +2,7 @@
 
 <script setup>
 
-import {  ref, watchEffect  } from 'vue'
+import {  ref, watchEffect ,watch } from 'vue'
 
 const showModalAdd = ref(false);
 const showModalUpdate = ref(false);
@@ -11,15 +11,19 @@ const addTitle = ref('');
 const updateNote = ref('');
 const updateTitle = ref('');
 const update = ref(false);
+const id = ref(0);
 
 const Notes = ref([]);
+watch(Notes,()=>{
+  console.log(Notes.value)
+})
 
 const storeNote = () => {
   if(addNote.value.length<1 || addTitle.value.length<1){
     return alert("Please fill all the section")
   } 
   Notes.value.push({
-    id: Notes.value.length+1,
+    id: addTitle.value + Notes.value.length+1,
     title: addTitle.value,
     description: addNote.value,
     delete: false,
@@ -55,12 +59,15 @@ const addUpdateNote = () => {
   }
 
   const updatedNote = {
+  
     id: obj.value.id,
     title: updateTitle.value,
     description: updateNote.value,
     delete: false,
     backgroundColor: getRandomColor
   };
+
+  console.log(updateNote.value);
 
   const index = Notes.value.findIndex((note) => note.id === updatedNote.id);
 

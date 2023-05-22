@@ -1,43 +1,52 @@
 
-
 <script setup>
+import ModalAdd from './components/ModalAdd.vue';
+// import ModalUpdate from './components/ModalUpdate.vue';
+import ModalUpdate from './components/ModalUpdate.vue';
 
-import {  ref, watchEffect ,watch } from 'vue'
+import {  ref, watchEffect } from 'vue'
+
 
 const showModalAdd = ref(false);
 const showModalUpdate = ref(false);
-const addNote = ref('');
-const addTitle = ref('');
+
 const updateNote = ref('');
 const updateTitle = ref('');
 const update = ref(false);
-const id = ref(0);
 
 const Notes = ref([]);
-watch(Notes,()=>{
-  console.log(Notes.value)
-})
+// watch(Notes,()=>{
+//   console.log(Notes.value)
+// })
 
-const storeNote = () => {
-  if(addNote.value.length<1 || addTitle.value.length<1){
+// this method for store a note into a card and the data coming from the ModalAdd component which is tanken into the perameter 
+const storeNote = (title, description) => {
+  if(title.length<1 || description.length<1){
     return alert("Please fill all the section")
   } 
   Notes.value.push({
-    id: addTitle.value + Notes.value.length+1,
-    title: addTitle.value,
-    description: addNote.value,
+    id: title + Notes.value.length+1,
+    title: title,
+    description: description,
     delete: false,
     update: false,
     backgroundColor: getRandomColor()
-  })
-  addNote.value = '';
-  addTitle.value = '';
+  }) 
   showModalAdd.value = false;
-
 }
 
+// this method is for close the add modal
+const closeModal= (value) => {
+  console.log(value);
+  if(value){
+    // showModalAdd.value=false;
+    showModalUpdate.value = false;
+  }
+}
+
+// this method is for delete a note
 const deleteNote = (note) => {
-  Notes.value =  Notes.value.filter(a =>  a !==note);
+  Notes.value =  Notes.value.filter(a =>  a !== note);
 }
 
 // initialUpdateModal used for enable editing mode and get the editable card or object
@@ -54,7 +63,7 @@ const initialUpdateModal = (note) => {
 // addUpdateNote method is used for update the note data
 
 const addUpdateNote = () => {
-  if (updateNote.value.length < 1 || updateTitle.value.length < 1) {
+  if (updateObj.value.length < 1 || updateTitle.value.length < 1) {
     return alert("Please fill all the sections");
   }
 
@@ -111,22 +120,14 @@ watchEffect(() => {
 <template>
   <section>
     <div v-show="showModalAdd" class="overlay">
-        <div class="modal">
-            <input type="text" v-model="addTitle" placeholder="Title">
-            <textarea name="note" id="note" cols="20" rows="8" v-model="addNote" placeholder="Description"></textarea>
-            <button @click="storeNote">Add</button>
-            <button @click="showModalAdd=false" class="close">Close</button>
-        </div>
+        <ModalAdd @store-note="storeNote" @close-value = "closeModal"/>
     </div>
 
-    <div v-show="showModalUpdate" class="overlay">
-        <div class="modal">
-            <input type="text" v-model="updateTitle" placeholder="Title">
-            <textarea name="note" id="note" cols="20" rows="8" v-model="updateNote" placeholder="Description"></textarea>
-            <button @click="addUpdateNote">Confirm</button>
-            <button @click="showModalUpdate=false" class="close">Close</button>
-        </div>
-    </div>
+    <!-- <div v-show="showModalUpdate" class="overlay">
+        <ModalUpdate @update-note="addUpdateNote" @close-value = "closeModal"/>
+    </div> -->
+
+
     <div class="container">
       <header>
         <h1>Notes</h1>
@@ -142,6 +143,9 @@ watchEffect(() => {
           <p class="card-description">{{ note.description }}</p>
           <div class="card-buttons">
             <button class="update" @click="initialUpdateModal(note)" >Update</button>
+            <div v-show="showModalUpdate">
+              <ModalUpdate/>
+            </div>
             <button class="delete" @click="deleteNote(note)">Delete</button>
           </div>
         </div>
@@ -223,25 +227,6 @@ h1 {
     justify-content: center;
 }
 
-.modal{
-    position: relative;
-    width: 46.6rem;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    border-radius: .63rem;
-    padding: 1.9rem;
-}
-.modal button{
-    background-color: blueviolet;
-    padding: .63rem 1.25rem;
-    margin-top: 0.98rem;
-    cursor: pointer;
-    border: none;
-    color: white;
-    border-radius: .21rem;
-}
-
 .card-container{
     display: flex;
     flex-wrap: wrap;
@@ -274,5 +259,8 @@ textarea{
   border: none;
   border-radius: .21rem;
 }
+
+
+
 
 </style>

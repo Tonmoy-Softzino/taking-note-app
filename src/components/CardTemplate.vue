@@ -17,7 +17,6 @@ const deleteNote = (note) => {
 }
 const updateMethod = (note) => {
   refObj.value = note;
-
 }
 const addUpdateNote = (updateTitle, updateNote) => {
   if (updateTitle.length < 1 || updateNote.length < 1) {
@@ -114,10 +113,5 @@ h3{
 hr{
   color: white;
   margin: 1px;
-}
-@media(max-width<400px){
-  .card{
-    width: 90%;
-  }
 }
 </style>

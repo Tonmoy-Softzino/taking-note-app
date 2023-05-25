@@ -1,47 +1,42 @@
 <script setup>
-import { defineEmits, ref, defineProps } from "vue";
+import { ref, watch } from "vue";
 
 const props = defineProps({
-  note: Object,
-});
-
-
-const updateNote = ref(props.note.note); //updating the note value
-const updateTitle = ref(props.note.titl); //for updating the title
-const update = ref(false); //It is like a switch for enable the update phase
+  referenceNote: Object,
+})
+const updateNote = ref(props.referenceNote.description); //updating the note value
+const updateTitle = ref(props.referenceNote.title); //for updating the title
 const close = ref(true); //for controling the form open
 
-const emit = defineEmits(["updateNoteValue", "closeUpdateMoadl"]); // defining an emit or say custom event which perform two events and can be set more
+watch(() => props.referenceNote, (newValue) => {
+  updateNote.value = newValue.description;
+  updateTitle.value = newValue.title;
+});
+
+const emit = defineEmits(["update", "closeModal"]); // defining an emit or say custom event which perform two events and can be set more
+
 
 // this method is for handle the form data for adding note
 const updateNoteValue = () => {
-  emit("updateNoteValue", updateTitle.value, updateNote.value);
+  emit("update", updateTitle.value, updateNote.value);
 };
 
 // this method is for close the add note modal
 const closeUpdateForm = () => {
-  close.value = true;
-  emit("closeValue", close.value);
-  console.log(close.value);
+  emit("closeModal", close.value);
+  updateNote.value = props.referenceNote.description;
+  updateTitle.value = props.referenceNote.title;
 };
 </script>
 
 <template>
-
-<!-- <button class="update" @click="close = false">Update</button> -->
-  <div class="modal-mask" v-show="!close">
+  <!-- <button class="update" @click="close = false">Update</button> -->
+  <div class="modal-mask">
     <div class="modal-container">
       <div class="modal">
-        <input type="text" v-model="updateTitle" placeholder="Title" />
-        <textarea
-          name="note"
-          id="note"
-          cols="20"
-          rows="8"
-          v-model="updateNote"
-          placeholder="Description"
-        ></textarea>
-        <button @click="updateNoteValue">Confirm</button>
+        <input type="text" placeholder="Title" v-model="updateTitle"/>
+        <textarea name="note" id="note" cols="20" rows="8" v-model="updateNote" placeholder="Description"></textarea>
+        <button @click="updateNoteValue" >Confirm</button>
         <button @click="closeUpdateForm" class="close">Close</button>
       </div>
     </div>
@@ -54,7 +49,7 @@ const closeUpdateForm = () => {
   inset: 0;
   display: grid;
   place-items: center;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(116, 80, 80, 0.3);
 }
 .modal-container {
   background-color: white;

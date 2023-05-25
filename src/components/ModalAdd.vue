@@ -1,5 +1,5 @@
 <script setup>
-import { defineEmits, ref } from 'vue';
+import { ref } from 'vue';
 
 
 const emit = defineEmits(["storeNote" , "closeValue"]); // defining an emit or say custom event which perform two events and can be set more

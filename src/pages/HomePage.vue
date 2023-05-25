@@ -55,7 +55,7 @@ const deleteNote = (note) => {
 
 // getRandomColor method is for different bakckground color for the notes
 
-function getRandomColor() {
+function getRandomColor() { //not used
   return "hsl(" + Math.random() * 360 + ", 100%, 75%)";
 }
 

@@ -1,12 +1,13 @@
 const util = {};
 
-util.saveDataToLocal = (tasks) => {
-  sessionStorage.setItem("tasks", JSON.stringify(tasks));
+util.saveToLocalStorage = (notes) => {
+  localStorage.setItem('notes', JSON.stringify(notes));
 };
 
-util.getDataFromLocal = () => {
-  if (sessionStorage.getItem("tasks")) {
-    return JSON.parse(sessionStorage.getItem("tasks"));
+util.loadFromLocalStorage = () => {
+  const storedNotes = localStorage.getItem('notes');
+  if (storedNotes) {
+    return JSON.parse(storedNotes);
   }
   return [];
 };

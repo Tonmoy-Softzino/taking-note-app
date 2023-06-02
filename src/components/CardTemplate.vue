@@ -22,8 +22,6 @@ const addUpdateNote = (updateTitle, updateNote) => {
   if (updateTitle.length < 1 || updateNote.length < 1) {
     return alert("Please fill all the sections");
   }
-  console.log(updateTitle);
-  console.log(updateNote);
 
   const updatedNote = {
     id: refObj.value.id,
@@ -53,9 +51,7 @@ const addUpdateNote = (updateTitle, updateNote) => {
     <hr />
     <p class="card-description">{{ note.description }}</p>
     <div class="card-buttons">
-      <button class="update" @click="showModalUpdate=true , updateMethod(note)">Update</button>
-      
-      
+      <button class="update" @click="showModalUpdate=true , updateMethod(note)">Update</button> 
       <button class="delete" @click="deleteNote(note)">Delete</button>
     </div>
   </div>

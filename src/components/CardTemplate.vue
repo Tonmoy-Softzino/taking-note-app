@@ -32,8 +32,6 @@ const addUpdateNote = (updateTitle, updateNote) => {
     backgroundColor: refObj.backgroundColor
   };
 
-  // console.log(updateNote.value);
-
   const index = props.noteForProps.findIndex((r) => r.id === updatedNote.id);
 
   if (index !== -1) {
